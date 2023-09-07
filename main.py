@@ -314,19 +314,6 @@ def mainpage():
   # what happens when you select a room
   def fnc_raumselection(room_name):
     nonlocal current_room_name
-    if use_timetracking > 0:
-      for row in cursor.execute(timetracking_sqlquery1):
-        if (row.Vorname + ' ' + row.Name) in Employees:
-          timetracking_sqlquery2.replace('(',"\'' + str(row.").replace(')',") + '\''")
-          for subrow in subcursor.execute(timetracking_sqlquery2):
-            dt = datetime.strptime(str(subrow.Datum), '%Y%m%d')
-            print (row.Vorname + ' ' + row.Name + ' ' + str(row.Personalnummer) + ' ' + str((dt + timedelta(minutes=subrow.Uhrzeit))) + ' ' + str(subrow.Buchungsart) )
-            if subrow.Buchungsart == 'B1':
-              emButtons[emButtonsNames[row.Vorname + ' ' + row.Name]].classes('bg-green')
-            else:
-              emButtons[emButtonsNames[row.Vorname + ' ' + row.Name]].classes('bg-grey')
-
-
     current_room_name = str(room_name) #.split('\n', 1)[0]
     btn_goBack.set_visibility(True)
     lbl_placeholder.set_visibility(False)
@@ -349,6 +336,28 @@ def mainpage():
   btn_goBack.set_text(BackButtonLabel)
   btn_goBack.set_visibility(False)
   btn_goBack.on('click', fnc_goBack)
+
+
+  def fnc_employeestatus():
+    if use_timetracking > 0:
+      for row in cursor.execute(timetracking_sqlquery1):
+        if (row.Vorname + ' ' + row.Name) in Employees:
+          timetracking_sqlquery2.replace('(',"\'' + str(row.").replace(')',") + '\''")
+          for subrow in subcursor.execute(timetracking_sqlquery2):
+            dt = datetime.strptime(str(subrow.Datum), '%Y%m%d')
+            print (row.Vorname + ' ' + row.Name + ' ' + str(row.Personalnummer) + ' ' + str((dt + timedelta(minutes=subrow.Uhrzeit))) + ' ' + str(subrow.Buchungsart) )
+            if subrow.Buchungsart == 'B1':
+              emButtons[emButtonsNames[row.Vorname + ' ' + row.Name]].classes('bg-green')
+            else:
+              emButtons[emButtonsNames[row.Vorname + ' ' + row.Name]].classes('bg-grey')
+      print ('Employeestatus was updated')
+    else:
+      print ('Timetracking not being used, edit config.cfg to use.')
+
+  ui.timer(10, fnc_employeestatus)
+
+
+
 
 # GUI startup
 ui.run (port = 8000, title='Kabinenruf DA_RHE', dark=None) # favicon=''
