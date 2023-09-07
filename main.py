@@ -360,4 +360,4 @@ def mainpage():
 
 
 # GUI startup
-ui.run (port = 8000, title='Kabinenruf DA_RHE', dark=None) # favicon=''
+ui.run (port = 8000, title=PageTitle, dark=None) # favicon=''
