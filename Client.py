@@ -17,7 +17,7 @@ current_time = datetime.now().strftime("%H:%M:%S")
 
 
 # define function to create missing directories
-def funcMkDir(path):
+def fnc_mkDir(path):
         # Check whether the specified path exists or not
         isExist = os.path.exists(path)
         if not isExist:
@@ -36,8 +36,8 @@ month = todayArray[1]
 path = year + "/" + month + "/"
 
 # calling the "create the missing directories" function
-funcMkDir(year)
-funcMkDir(year + "/" + month)
+fnc_mkDir(year)
+fnc_mkDir(year + "/" + month)
 
 # write file to destination
 with open('/home/pi/' + path + today + '_templog.txt', 'a') as f:
