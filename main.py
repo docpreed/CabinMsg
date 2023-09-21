@@ -84,6 +84,8 @@ else:
     #exit ()
 del sp
 
+PageTitle = None
+
 # to add an individual instance for each user
 @ui.page('/mainpage')
 def mainpage():
@@ -98,7 +100,6 @@ def mainpage():
   roButtons = {}
   roButtonsNames = {}
   heading = None
-  PageTitle = None
   selectionMsgSelected = None
   selectionMsgUnselected = None
   BackButtonLabel = None
@@ -135,6 +136,7 @@ def mainpage():
           tmp_Rooms.append(rowvar)
         elif heading == '[PageTitle]':
           PageTitle = rowvar
+          print (PageTitle)
         elif heading == '[MessageRoomSelected]':
           selectionMsgSelected = rowvar
         elif heading == '[MessageRoomUnselected]':
@@ -153,7 +155,7 @@ def mainpage():
           use_timetracking = 1
           timetracking_sqlconn = rowvar
         elif heading == '[Timetracking_SQL_query1]':
-          timetracking_sqlquery1 = rowvar.replace("', '",",").replace('(','').replace(')','')
+          timetracking_sqlquery1 = rowvar.replace("', '",",") #.replace('(','').replace(')','')
         elif heading == '[Timetracking_SQL_query2]':
           timetracking_sqlquery2 = rowvar.replace("', '",",")
 
@@ -340,6 +342,7 @@ def mainpage():
 
   def fnc_employeestatus():
     if use_timetracking > 0:
+#      timetracking_sqlquery1.replace('(',"\'' + str(row.").replace(')',") + '\''")
       for row in cursor.execute(timetracking_sqlquery1):
         if (row.Vorname + ' ' + row.Name) in Employees:
           timetracking_sqlquery2.replace('(',"\'' + str(row.").replace(')',") + '\''")
@@ -348,13 +351,15 @@ def mainpage():
             print (row.Vorname + ' ' + row.Name + ' ' + str(row.Personalnummer) + ' ' + str((dt + timedelta(minutes=subrow.Uhrzeit))) + ' ' + str(subrow.Buchungsart) )
             if subrow.Buchungsart == 'B1':
               emButtons[emButtonsNames[row.Vorname + ' ' + row.Name]].classes('bg-green')
-            else:
+            elif subrow.Buchungsart == 'B2':
               emButtons[emButtonsNames[row.Vorname + ' ' + row.Name]].classes('bg-grey')
+            else:
+              emButtons[emButtonsNames[row.Vorname + ' ' + row.Name]].classes('bg-lightgrey')
       print ('Employeestatus was updated')
     else:
       print ('Timetracking not being used, edit config.cfg to use.')
 
-  ui.timer(10, fnc_employeestatus)
+  ui.timer(60, fnc_employeestatus)
 
 
 
