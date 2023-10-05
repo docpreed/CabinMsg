@@ -241,7 +241,7 @@ def mainpage():
 
       # page title
       with ui.card().classes('bg-[#cbd5e1]'):
-        ui.label(PageTitle).style('color: #0000BB; font-size: 200%; font-weight: 300')
+        ui.label(PageTitle).style('color: #0000BB; font-size: 200%; font-weight: 300').classes('font-mono')
 
       # currently selected room
       ui.separator()
