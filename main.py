@@ -345,8 +345,10 @@ def mainpage():
 #      timetracking_sqlquery1.replace('(',"\'' + str(row.").replace(')',") + '\''")
       for row in cursor.execute(timetracking_sqlquery1):
         if (row.Vorname + ' ' + row.Name) in Employees:
-          timetracking_sqlquery2.replace('(',"\'' + str(row.").replace(')',") + '\''")
-          for subrow in subcursor.execute(timetracking_sqlquery2):
+          nonlocal timetracking_sqlquery2
+#          timetracking_sqlquery2 = timetracking_sqlquery2.replace('(',"row.").replace(')',"")
+          timetracking_sqlquery3 = timetracking_sqlquery2.replace('(Personalnummer)',str(row.Personalnummer))
+          for subrow in subcursor.execute(timetracking_sqlquery3):
             dt = datetime.strptime(str(subrow.Datum), '%Y%m%d')
             print (row.Vorname + ' ' + row.Name + ' ' + str(row.Personalnummer) + ' ' + str((dt + timedelta(minutes=subrow.Uhrzeit))) + ' ' + str(subrow.Buchungsart) )
             if subrow.Buchungsart == 'B1':
